@@ -1,249 +1,285 @@
-Cogentia
+🧠 Cognetia — A Cognitive AI Agent (Experimental)
 
-Cogentia is a cognitive automation framework for building situationally aware AI agents that learn online, adapt their internal structure, predict outcomes, and selectively forget—without relying on static workflows or constant retraining.
+Cognetia is an experimental cognitive AI agent that focuses on how an agent decides to act, not just what it outputs.
 
-Instead of task execution, Cogentia focuses on cognition.
+Unlike typical LLM-based agents, Cognetia explicitly models:
 
-Why Cogentia?
+belief formation
 
-Most AI agents today are:
+uncertainty and confidence
 
-Tool-callers with planners
+exploratory behavior
 
-Prompt-heavy
+internal world simulation
 
-Architecturally static
+learning from real outcomes
 
-Brittle under novelty
+forgetting unused knowledge
 
-Cogentia is built on a different assumption:
+habit formation and habit breaking
 
-Intelligence emerges from situations, predictions, memory dynamics, and adaptation, not from fixed pipelines.
+This project is an exploration of cognition-first AI, not chatbots or workflow automation.
 
-Core Principles
+✨ Core Idea
 
-Situational Intelligence over Token Prediction
+Most modern “AI agents”:
 
-Learning via Association, not Global Loss
+always respond
 
-Dynamic Structure, not Frozen Architectures
+always act
 
-Confidence-Aware Decision Making
+hallucinate confidence
 
-Forgetting as a Feature, not a Bug
+rely entirely on LLMs
 
-High-Level Architecture
-┌───────────────┐
-│ MCP Interface │  ← tools, APIs, environments
-└───────┬───────┘
-        ↓
-┌─────────────────────┐
-│ Situational Encoder │
-└───────┬─────────────┘
-        ↓
-┌──────────────────────────────┐
-│ Situational Predictive Core  │
-│ (Predictive Coding Engine)   │
-└───────┬──────────────────────┘
-        ↓
-┌─────────────────────┐
-│ Bayesian Confidence │
-│ & Decision Module   │
-└───────┬─────────────┘
-        ↓
-┌─────────────────────┐
-│ Action Selection    │ → MCP tool execution
-└───────┬─────────────┘
-        ↓
-┌──────────────────────────────────┐
-│ Hebbian Learning & Dynamic Graph │
-└───────┬──────────────────────────┘
-        ↓
-┌─────────────────────┐
-│ Memory Consolidation│
-│ & Forgetting        │
-└─────────────────────┘
+store memory as text embeddings
 
-Key Components
-1. Situational Predictive Coding
+Cognetia does the opposite.
 
-Cogentia predicts state transitions, not outputs.
+If the agent is unsure, it can choose to do nothing.
+If it lacks experience, it explores cautiously.
+If a behavior repeats too much, it becomes fatigued.
 
-Instead of:
+This creates behavior that is less flashy, but far more epistemically honest.
 
-input → output
+🧩 Architecture Overview
+
+Cognetia is built around a strict separation of concerns:
+
+Perception
+   ↓
+Situation Encoding
+   ↓
+Memory Retrieval (Hebbian)
+   ↓
+World Simulation (LLM via MCP)
+   ↓
+Confidence & Risk Evaluation
+   ↓
+Action / No-Action
+   ↓
+Learning + Forgetting
+
+Key principle:
+
+LLMs are used for imagination, not cognition.
+
+🧠 Core Components
+1. Situation Representation
+
+A Situation is a structured snapshot of context:
+
+Situation(
+  context="user_security_question",
+  entities=("api_key", "local_machine"),
+  signals={
+    "risk": 0.9,
+    "uncertainty": 0.6,
+    "novelty": 0.4
+  }
+)
 
 
-It models:
+If two situations feel similar to a human, they should look similar here.
 
-current situation → expected next situation
+2. Hebbian Memory (Associative Learning)
+
+Memory is stored as associations, not facts:
+
+(Situation) ↔ (Action) ↔ (Outcome)
 
 
-Prediction error becomes the learning signal, enabling:
+Learning rule:
 
-Self-supervised learning
+repeated success strengthens associations
 
-Novelty detection
+surprising outcomes increase learning rate
 
-Anticipatory behavior
+unused memories decay over time
 
-2. Hebbian Learning Engine
+No backpropagation.
+No offline training.
+Only experience.
 
-Learning is driven by co-activation:
+3. Confidence Engine
 
-“What fired together and led to meaningful outcomes?”
+Confidence is computed from past outcomes, not model logits.
 
-This creates:
+No experience → low confidence
 
-Intuitive associations
+Repeated success → higher confidence
 
-Concept-level memory
+Confidence gates action execution
 
-Robust generalization under sparse feedback
+If confidence is below a threshold:
 
-No global loss function is required.
+the agent may explore
 
-3. Dynamic Neural Topology
+or may choose NO_ACTION
 
-Cogentia’s internal network is not fixed.
+Silence is allowed.
 
-New nodes form when new concepts emerge
+4. Exploration Bootstrapping
 
-Connections strengthen or decay with usage
+When the agent has little or no experience:
 
-Obsolete structures are pruned automatically
+confidence is low
 
-This allows the agent to restructure its cognition over time.
+exploration mode is enabled
 
-4. Bayesian Confidence & Self-Regulation
+safe, low-risk actions are preferred
 
-Every internal prediction carries uncertainty.
+This allows learning without reckless behavior.
 
-This enables the agent to:
+5. Internal World Simulation (LLM)
 
-Delay action when unsure
+Before acting, the agent simulates possible futures using an LLM.
 
-Request human input
+The LLM:
 
-Choose conservative strategies
+generates possible outcomes
 
-Avoid overconfident failures
+does not decide what to do
 
-Confidence is treated as a first-class signal.
+does not update memory
 
-5. Memory Forgetting & Consolidation
+This mirrors human “mental simulation”.
 
-Cogentia intentionally forgets.
+6. MCP (Model Context Protocol)
 
-Unused or low-impact associations decay over time, while important patterns are consolidated during low-load phases (analogous to “dreaming”).
+All imagination and execution is accessed only through MCP tools.
+
+This enforces:
+
+permission boundaries
+
+no direct LLM access from cognition
+
+no uncontrolled side effects
+
+Cognetia can run with:
+
+a local MCP abstraction (research mode)
+
+or FastMCP (server-based tools)
+
+7. Forgetting Mechanism
+
+Memory decays based on:
+
+time since last use
+
+usage frequency
+
+importance of the outcome
+
+Unused, low-impact knowledge disappears naturally.
 
 This prevents:
 
-Memory bloat
+memory bloat
 
-Concept drift overload
+stale beliefs
 
-Overfitting to outdated situations
+overfitting to old situations
 
-MCP Integration
+8. Action Fatigue (Habit Breaking)
 
-Cogentia uses MCP (Model Context Protocol) as its perception–action interface.
+Repeated actions accumulate fatigue.
 
-MCP provides:
+Even if an action is successful:
 
-Tool access
+repeating it too often reduces its score
 
-Environmental interaction
+the agent eventually tries alternatives
 
-State observability
+infinite loops are avoided
 
-Cogentia provides:
+This models:
 
-Situational understanding
+boredom
 
-Learning
+diminishing returns
 
-Adaptation
+habit breaking
 
-Decision-making
+🧪 Example Behavior
+STEP 1 → exploration → ask_clarification (low confidence)
+STEP 2 → ask_clarification (confidence rises)
+STEP 3 → ask_clarification (fatigue increases)
+STEP 4 → observe
+STEP 5 → NO_ACTION
 
-Together, they enable cognitive automation agents, not scripted workflows.
 
-What Cogentia Is Not
+This is intentional behavior, not randomness.
 
-❌ A prompt-engineering framework
+🚫 What Cognetia Is NOT
 
-❌ A workflow automation tool
+❌ Not a chatbot
 
-❌ A fine-tuning or RL pipeline
+❌ Not an agent framework
 
-❌ A chatbot agent wrapper
+❌ Not an RL benchmark
 
-Cogentia is a cognitive architecture.
+❌ Not prompt engineering
 
-Use Cases
+❌ Not designed for production (yet)
 
-Cognitive automation agents (DevOps, Ops, Research)
+This is a research system.
 
-Adaptive cybersecurity systems
+🛠 How to Run
+python cogniagent.py
 
-Personalized learning systems
 
-Market regime & anomaly modeling
+No external services required (LLM is stubbed).
 
-Autonomous scientific exploration
+🧭 Current Status
 
-Long-lived AI agents in changing environments
+✅ End-to-end cognitive loop
 
-Design Philosophy
+✅ Confidence-gated action
 
-Intelligence is not optimization.
-Intelligence is adaptation under uncertainty.
+✅ Exploration vs hesitation
 
-Cogentia prioritizes:
+✅ Internal simulation
 
-Continual learning
+✅ Forgetting + fatigue
 
-Structural plasticity
+⚠️ Single-step reasoning only
 
-Situational awareness
+⚠️ No long-term goals yet
 
-Long-term autonomy
+🔮 Planned Extensions
 
-Current Status
+Dream / sleep consolidation
 
-🚧 Research & experimental framework
+Situation similarity graph
 
-Architecture under active development
+Risk-aware exploration bias
 
-Focused on correctness, stability, and interpretability
+Multi-step world simulation
 
-Not optimized for scale yet
+Embodied environments (robotics / simulations)
 
-Roadmap
+🧠 Philosophy
 
- Formal definition of situational state space
+Cognetia follows a simple belief:
 
- Predictive coding module implementation
+Intelligence is not about always having an answer.
+It’s about knowing when not to act.
 
- Hebbian + Bayesian hybrid learner
+⚠️ Disclaimer
 
- Dynamic graph pruning strategies
+This project explores cognitive ideas inspired by:
 
- MCP-based reference agent
+predictive processing
 
- Benchmark against static agent frameworks
+Hebbian learning
 
-Inspiration (Conceptual)
+active inference
 
-Cogentia draws inspiration from:
+biological cognition
 
-Predictive processing theories
+It is experimental and may behave in unexpected ways.
 
-Hebbian plasticity
-
-Continual learning systems
-
-Cognitive architectures
-
-Human memory dynamics
+That’s the point.
